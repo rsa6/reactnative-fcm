@@ -1,3 +1,6 @@
+# Firebase FCM with In App Notification
+- https://reactnativeexample.com/tag/notifications/
+
 ### Change Notification Icon
 - add this object to app.json
 ```

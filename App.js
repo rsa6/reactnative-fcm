@@ -1,13 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, Button, Alert, Platform } from 'react-native';
 import { Constants, Notifications, Permissions } from 'expo';
+import DropdownAlert from 'react-native-dropdownalert';
 
-
-export default class App extends React.Component {
+class App extends React.Component {
 
   componentWillMount() {
     this.getiOSNotificationPermission();
     this.listenForNotifications();
+  }
+
+  componentDidMount() {
+    this.fetchData();
   }
 
   async getiOSNotificationPermission() {
@@ -19,6 +23,14 @@ export default class App extends React.Component {
       await Permissions.askAsync(Permissions.NOTIFICATIONS);
     }
   }
+
+  fetchData = async () => {
+    try {
+      await fetch('https://mywebsite.com/endpoint/');
+    } catch (error) {
+      this.dropdown.alertWithType('error', 'Error', error.message);
+    }
+  };
   
   listenForNotifications = () => {
     Notifications.addListener(notification => {
@@ -53,16 +65,14 @@ export default class App extends React.Component {
     return localnotification;
   }
 
-
-
   render() {
     return (
       <View style={styles.container}>
-
         <Button
           title="Please wait 3 Seconds"
           onPress={this.handleSubmit}
         />
+        <DropdownAlert ref={ref => this.dropdown = ref} />
       </View>
     );
   }
@@ -77,3 +87,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;
